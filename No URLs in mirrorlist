@@ -12,9 +12,10 @@ sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org
 sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/xxx-*        # for example ceph
 sudo yum update -y
 
+Ref: https://techglimpse.com/failed-metadata-repo-appstream-centos-8/
+
 ==============================================================================================================================================
 https://techaspire.com.au/knowledge-base/install-openvswitch-centos-8/
-
 
 Install OpenvSwitch Centos 8
 Posted
