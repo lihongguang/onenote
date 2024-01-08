@@ -1,3 +1,8 @@
+
+sudo yum install -y epel-release
+sudo yum install -y centos-release-openstack-train
+sudo yum install openvswitch libibverbs
+
 Error: Failed to download metadata for repo 'appstream': Cannot prepare internal mirrorlist: No URLs in mirrorlist
 
 
@@ -7,3 +12,96 @@ sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org
 sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/xxx-*        # for example ceph
 sudo yum update -y
 
+==============================================================================================================================================
+https://techaspire.com.au/knowledge-base/install-openvswitch-centos-8/
+
+
+Install OpenvSwitch Centos 8
+Posted
+February 8, 2021
+Updated
+February 8, 2021
+By
+tony.williamson@techaspire.com.au
+Open vSwitch is a multilayer software switch created to provide an open source, production quality switch platform that supports standard management interfaces and opens the forwarding functions to programmatic extension and control. Open vSwitch is widely used as a virtual switch in Virtual Machines environments such as OpenStack implementation. In this article we will install Open vSwitch on CentOS 8 | RHEL 8.
+
+These are the core features provided by Open vSwitch.
+
+Visibility into inter-VM communication via NetFlow, sFlow(R), IPFIX, SPAN, RSPAN, and GRE-tunneled mirrors
+LACP (IEEE 802.1AX-2008)
+Standard 802.1Q VLAN model with trunking
+Multicast snooping
+IETF Auto-Attach SPBM and rudimentary required LLDP support
+BFD and 802.1ag link monitoring
+STP (IEEE 802.1D-1998) and RSTP (IEEE 802.1D-2004)
+Fine-grained QoS control
+Support for HFSC qdisc
+Per VM interface traffic policing
+NIC bonding with source-MAC load balancing, active backup, and L4 hashing
+OpenFlow protocol support (including many extensions for virtualization)
+IPv6 support
+Multiple tunneling protocols (GRE, VXLAN, STT, and Geneve, with IPsec support)
+Remote configuration protocol with C and Python bindings
+Kernel and user-space forwarding engine options
+Multi-table forwarding pipeline with flow-caching engine
+Forwarding layer abstraction to ease porting to new software and hardware platforms
+Install Open vSwitch on CentOS 8
+We’re going to use OpenStack repository to pull Open vSwitch rpm packages.
+
+Add OpenStack repository to CentOS 8
+sudo yum install -y epel-release
+sudo yum install -y centos-release-openstack-train
+Then install Open vSwitch on CentOS 8
+
+sudo yum install openvswitch libibverbs
+Accept installation:
+
+CentOS 8:
+
+CentOS-8 - RabbitMQ 38                                                                                                  234 kB/s |  80 kB     00:00    
+CentOS- 8 - OpenStack train                                                                                             3.1 MB/s | 2.0 MB     00:00    
+CentOS-8 - Advanced Virtualization                                                                                      330 kB/s |  72 kB     00:00    
+CentOS-8 - Ceph Nautilus                                                                                                614 kB/s | 180 kB     00:00    
+Dependencies resolved.
+========================================================================================================================================================
+ Package                           Architecture                 Version                              Repository                                    Size
+========================================================================================================================================================
+Installing:
+ openvswitch                       x86_64                       2.12.0-1.el8                         centos-openstack-train                       2.0 M
+Installing dependencies:
+ dpdk                              x86_64                       18.11.2-3.el8                        AppStream                                    1.8 M
+
+Transaction Summary
+========================================================================================================================================================
+Install  2 Packages
+
+Total download size: 3.8 M
+Installed size: 14 M
+Is this ok [y/N]: y
+....
+Total                                                                                                                   3.3 MB/s | 3.8 MB     00:01     
+warning: /var/cache/dnf/centos-openstack-train-ceeb4cd59b18ee21/packages/openvswitch-2.12.0-1.el8.x86_64.rpm: Header V4 RSA/SHA1 Signature, key ID 764429e6: NOKEY
+CentOS- 8 - OpenStack train                                                                                             1.0 MB/s | 1.0 kB     00:00    
+Importing GPG key 0x764429E6:
+ Userid     : "CentOS Cloud SIG (http://wiki.centos.org/SpecialInterestGroup/Cloud) <security@centos.org>"
+ Fingerprint: 736A F511 6D9C 40E2 AF6B 074B F9B9 FEE7 7644 29E6
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud
+Is this ok [y/N]: y
+Start and enable openvswitch service:
+
+sudo systemctl enable --now openvswitch
+Confirm service status:
+
+$ systemctl status openvswitch
+● openvswitch.service - Open vSwitch
+   Loaded: loaded (/usr/lib/systemd/system/openvswitch.service; enabled; vendor preset: disabled)
+   Active: active (exited) since Fri 2020-06-05 23:24:15 CEST; 24s ago
+  Process: 9704 ExecStart=/bin/true (code=exited, status=0/SUCCESS)
+ Main PID: 9704 (code=exited, status=0/SUCCESS)
+
+Jun 05 23:24:15 centos.computingforgeeks.com systemd[1]: Starting Open vSwitch...
+Jun 05 23:24:15 centos.computingforgeeks.com systemd[1]: Started Open vSwitch.
+
+Check if ovs-vsctl command is usable.# ovs-vsctl show
+fc82c4af-4f2c-433d-a442-d260304da97c
+    ovs_version: "2.12.0"
